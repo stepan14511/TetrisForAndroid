@@ -6,4 +6,12 @@
     tools:context=".MenuActivity"
     android:padding="20dp">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="PLAY"
+        android:textColor="#FF0000"
+        android:textSize="40sp"/>
+
 </RelativeLayout>
