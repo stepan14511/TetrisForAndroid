@@ -38,3 +38,6 @@ local.properties
 ehthumbs.db
 Thumbs.db
 e
+
+# Temp files and resources
+ResourcesAndTempFiles
