@@ -15,13 +15,17 @@ public class Block {
         color = NO_COLOR;
     }
 
-    public void changeColor(int color) throws IllegalArgumentException {
+    public void set_color(int color) throws IllegalArgumentException {
         if ((color < 0) || (color > 6))
             throw new IllegalArgumentException();
         this.color = color;
     }
 
-    public boolean isClear() {
+    public boolean is_clear() {
         return (color == NO_COLOR);
+    }
+
+    public int get_color(){
+        return color;
     }
 }
