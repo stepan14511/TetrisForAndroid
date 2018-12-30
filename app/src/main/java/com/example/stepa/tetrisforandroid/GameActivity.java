@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.util.Random;
@@ -22,6 +23,7 @@ public class GameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        buttons_init();
         field_pos_res_init();
         field = new Field(R.color.white, field_pos_res);
         update_field();
@@ -40,6 +42,35 @@ public class GameActivity extends Activity {
         super.onPause();
     }
     //End of system functions
+
+    private void buttons_init(){
+        ImageView control_left = findViewById(R.id.control_left);
+        control_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                current_block.move_left();
+                update_field();
+            }
+        });
+
+        ImageView control_right = findViewById(R.id.control_right);
+        control_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                current_block.move_right();
+                update_field();
+            }
+        });
+
+        ImageView control_down = findViewById(R.id.control_down);
+        control_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                current_block.move_down();
+                update_field();
+            }
+        });
+    }
 
     private void handler_start(){
         update_time = new Handler();

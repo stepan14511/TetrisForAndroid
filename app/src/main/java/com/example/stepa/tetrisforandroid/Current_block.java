@@ -71,26 +71,41 @@ public class Current_block {
     }
 
     public void move_down(){
-        make_block_space_white();
-        for(int i = 0; i < 4; i++){
-            blocks[i][0] += 1;
+        if((blocks[0][0] + 1 < Field.LINES)&&
+                (blocks[1][0] + 1 < Field.LINES)&&
+                (blocks[2][0] + 1 < Field.LINES)&&
+                (blocks[3][0] + 1 < Field.LINES)){
+            make_block_space_white();
+            for (int i = 0; i < 4; i++) {
+                blocks[i][0] += 1;
+            }
+            color_block_space();
         }
-        color_block_space();
     }
 
     public void move_left(){
-        make_block_space_white();
-        for(int i = 0; i < 4; i++){
-            blocks[i][1] -= 1;
+        if((blocks[0][1] - 1 >= 0)&&
+                (blocks[1][1] - 1 >= 0)&&
+                (blocks[2][1] - 1 >= 0)&&
+                (blocks[3][1] - 1 >= 0)){
+            make_block_space_white();
+            for(int i = 0; i < 4; i++){
+                blocks[i][1] -= 1;
+            }
+            color_block_space();
         }
-        color_block_space();
     }
 
     public void move_right(){
-        make_block_space_white();
-        for(int i = 0; i < 4; i++){
-            blocks[i][1] += 1;
+        if((blocks[0][1] + 1 < Field.ARROWS)&&
+                (blocks[1][1] + 1 < Field.ARROWS)&&
+                (blocks[2][1] + 1 < Field.ARROWS)&&
+                (blocks[3][1] + 1 < Field.ARROWS)){
+            make_block_space_white();
+            for(int i = 0; i < 4; i++){
+                blocks[i][1] += 1;
+            }
+            color_block_space();
         }
-        color_block_space();
     }
 }
