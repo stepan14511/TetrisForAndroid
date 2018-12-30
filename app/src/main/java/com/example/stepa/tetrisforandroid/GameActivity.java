@@ -16,6 +16,7 @@ public class GameActivity extends Activity {
     private Handler update_time;
     private Current_block current_block;
 
+    //System functions
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,13 +24,25 @@ public class GameActivity extends Activity {
 
         field_pos_res_init();
         field = new Field(R.color.white, field_pos_res);
-        handler_start_setup();
+        update_field();
 
         current_block = new Current_block(0, R.color.red, field_pos_res);
     }
 
-    private void handler_start_setup(){
-        update_field();
+    protected void onResume(){
+        super.onResume();
+
+        handler_start();
+    }
+
+    protected void onPause(){
+        super.onPause();
+
+        update_time = null;
+    }
+    //End of system functions
+
+    private void handler_start(){
         update_time = new Handler();
         update_time.postDelayed(new Runnable() {
             @Override
