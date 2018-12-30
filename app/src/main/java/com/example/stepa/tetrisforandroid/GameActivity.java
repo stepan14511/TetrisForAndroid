@@ -24,13 +24,17 @@ public class GameActivity extends Activity {
         field_pos_res_init();
         field = new Field(R.color.white, field_pos_res);
         handler_start_setup();
+
+        current_block = new Current_block(0, R.color.red, field_pos_res);
     }
 
     private void handler_start_setup(){
+        update_field();
         update_time = new Handler();
         update_time.postDelayed(new Runnable() {
             @Override
             public void run() {
+                current_block.move_down();
                 update_field();
                 update_time.postDelayed(this, UPDATE_RATE);
             }
