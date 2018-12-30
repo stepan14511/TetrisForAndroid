@@ -36,9 +36,8 @@ public class GameActivity extends Activity {
     }
 
     protected void onPause(){
+        update_time = new Handler();
         super.onPause();
-
-        update_time = null;
     }
     //End of system functions
 
