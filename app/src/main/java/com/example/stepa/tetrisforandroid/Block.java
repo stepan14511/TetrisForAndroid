@@ -1,31 +1,23 @@
 package com.example.stepa.tetrisforandroid;
 
 public class Block {
-    public static final int NO_COLOR = 0;
-    public static final int COLOR_ORANGE = 1;
-    public static final int COLOR_YELLOW = 2;
-    public static final int COLOR_BLUE = 3;
-    public static final int COLOR_PURPLE = 4;
-    public static final int COLOR_RED = 5;
-    public static final int COLOR_GREEN = 6;
+    private int color_res;
+    private int position_res;
 
-    private int color;
-
-    Block() {
-        color = NO_COLOR;
+    Block(int color_res, int position_res) {
+        this.color_res = color_res;
+        this.position_res = position_res;
     }
 
-    public void set_color(int color) throws IllegalArgumentException {
-        if ((color < 0) || (color > 6))
-            throw new IllegalArgumentException();
-        this.color = color;
+    public void set_color_res(int color_res){
+        this.color_res = color_res;
     }
 
-    public boolean is_clear() {
-        return (color == NO_COLOR);
+    public int get_position_res(){
+        return this.position_res;
     }
 
-    public int get_color(){
-        return color;
+    public int get_color_res(){
+        return this.color_res;
     }
 }
