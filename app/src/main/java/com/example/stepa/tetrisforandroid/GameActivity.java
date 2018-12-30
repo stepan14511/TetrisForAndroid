@@ -10,26 +10,20 @@ import java.util.Random;
 
 public class GameActivity extends Activity {
     private static final int UPDATE_RATE = 1200; //milliseconds
+    private int[][] field_pos_res;
 
-    private Field field;
+    public static Field field;
     private Handler update_time;
+    private Current_block current_block;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        first_field_preparations();
+        field_pos_res_init();
+        field = new Field(R.color.white, field_pos_res);
         handler_start_setup();
-    }
-
-    private void update_field(){
-        for(int line = 0; line < Field.LINES; line++){
-            for (int arrow = 0; arrow < Field.ARROWS; arrow++){
-                ImageView view = findViewById(field.get_element_position_res(line, arrow));
-                view.setBackgroundResource(field.get_element_color_res(line, arrow));
-            }
-        }
     }
 
     private void handler_start_setup(){
@@ -43,8 +37,17 @@ public class GameActivity extends Activity {
         }, UPDATE_RATE);
     }
 
-    private void first_field_preparations(){
-        int[][] field_pos_res = {
+    private void update_field(){
+        for(int line = 0; line < Field.LINES; line++){
+            for (int arrow = 0; arrow < Field.ARROWS; arrow++){
+                ImageView view = findViewById(field.get_element_position_res(line, arrow));
+                view.setBackgroundResource(field.get_element_color_res(line, arrow));
+            }
+        }
+    }
+
+    private void field_pos_res_init(){
+        field_pos_res = new int[][]{
                 {R.id.fld_0_0, R.id.fld_0_1, R.id.fld_0_2, R.id.fld_0_3, R.id.fld_0_4, R.id.fld_0_5, R.id.fld_0_6, R.id.fld_0_7, R.id.fld_0_8, R.id.fld_0_9, R.id.fld_0_10},
                 {R.id.fld_1_0, R.id.fld_1_1, R.id.fld_1_2, R.id.fld_1_3, R.id.fld_1_4, R.id.fld_1_5, R.id.fld_1_6, R.id.fld_1_7, R.id.fld_1_8, R.id.fld_1_9, R.id.fld_1_10},
                 {R.id.fld_2_0, R.id.fld_2_1, R.id.fld_2_2, R.id.fld_2_3, R.id.fld_2_4, R.id.fld_2_5, R.id.fld_2_6, R.id.fld_2_7, R.id.fld_2_8, R.id.fld_2_9, R.id.fld_2_10},
@@ -64,6 +67,5 @@ public class GameActivity extends Activity {
                 {R.id.fld_16_0, R.id.fld_16_1, R.id.fld_16_2, R.id.fld_16_3, R.id.fld_16_4, R.id.fld_16_5, R.id.fld_16_6, R.id.fld_16_7, R.id.fld_16_8, R.id.fld_16_9, R.id.fld_16_10},
                 {R.id.fld_17_0, R.id.fld_17_1, R.id.fld_17_2, R.id.fld_17_3, R.id.fld_17_4, R.id.fld_17_5, R.id.fld_17_6, R.id.fld_17_7, R.id.fld_17_8, R.id.fld_17_9, R.id.fld_17_10},
                 {R.id.fld_18_0, R.id.fld_18_1, R.id.fld_18_2, R.id.fld_18_3, R.id.fld_18_4, R.id.fld_18_5, R.id.fld_18_6, R.id.fld_18_7, R.id.fld_18_8, R.id.fld_18_9, R.id.fld_18_10}};
-        field = new Field(R.color.white, field_pos_res);
     } //Do not open(there's nothing interesting in it)
 }
