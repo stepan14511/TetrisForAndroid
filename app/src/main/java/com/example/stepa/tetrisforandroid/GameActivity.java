@@ -13,9 +13,20 @@ public class GameActivity extends Activity {
     private static final int UPDATE_RATE = 1200; //milliseconds
     private int[][] field_pos_res;
 
+    //Objects of user classes
     public static Field field;
-    private Handler update_time;
     private Current_block current_block;
+
+    //Handler
+    private Handler update_time;
+    private Runnable update_time_runnable = new Runnable() {
+        @Override
+        public void run() {
+            current_block.move_down();
+            update_field();
+            update_time.postDelayed(this, UPDATE_RATE);
+        }
+    };
 
     //System functions
     @Override
@@ -38,7 +49,7 @@ public class GameActivity extends Activity {
     }
 
     protected void onPause(){
-        update_time = new Handler();
+        update_time.removeCallbacks(update_time_runnable);
         super.onPause();
     }
     //End of system functions
@@ -67,6 +78,8 @@ public class GameActivity extends Activity {
             @Override
             public void onClick(View v) {
                 current_block.move_down();
+                update_time.removeCallbacks(update_time_runnable);
+                handler_start();
                 update_field();
             }
         });
@@ -74,14 +87,7 @@ public class GameActivity extends Activity {
 
     private void handler_start(){
         update_time = new Handler();
-        update_time.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                current_block.move_down();
-                update_field();
-                update_time.postDelayed(this, UPDATE_RATE);
-            }
-        }, UPDATE_RATE);
+        update_time.postDelayed(update_time_runnable, UPDATE_RATE);
     }
 
     private void update_field(){
