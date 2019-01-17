@@ -37,9 +37,8 @@ public class GameActivity extends Activity {
         buttons_init();
         field_pos_res_init();
         field = new Field(R.color.white, field_pos_res);
+        create_new_block();
         update_field();
-
-        current_block = new Current_block(0, R.color.red, field_pos_res);
     }
 
     protected void onResume(){
@@ -53,6 +52,12 @@ public class GameActivity extends Activity {
         super.onPause();
     }
     //End of system functions
+
+    private void create_new_block(){
+        int[] colors = new int[]{R.color.orange, R.color.yellow, R.color.blue, R.color.purple, R.color.red, R.color.green};
+        Random rnd = new Random();
+        current_block = new Current_block(rnd.nextInt(7), colors[rnd.nextInt(6)], rnd.nextInt(4));
+    }
 
     private void buttons_init(){
         ImageView control_left = findViewById(R.id.control_left);
