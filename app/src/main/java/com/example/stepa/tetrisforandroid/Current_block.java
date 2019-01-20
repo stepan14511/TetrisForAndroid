@@ -30,18 +30,25 @@ public class Current_block {
         }
     }
 
-    public void move_down(){
+    //Moving down. Returns true if successful and false if not
+    public boolean move_down(){
         make_block_space_white();
         boolean if_clear = true;
         for(int i = 0; i < 4; i++)
             if(!GameActivity.field.check_if_clear(blocks[i][0] + 1, blocks[i][1]))
                 if_clear = false;
 
-        if(if_clear)
+        if(if_clear) {
             for (int i = 0; i < 4; i++)
                 blocks[i][0] += 1;
+            color_block_space();
+            return true;
+        }
+        else{
+            color_block_space();
+            return false;
+        }
 
-        color_block_space();
     }
 
     public void move_left(){

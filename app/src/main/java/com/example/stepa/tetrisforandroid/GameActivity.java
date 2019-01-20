@@ -22,7 +22,8 @@ public class GameActivity extends Activity {
     private Runnable update_time_runnable = new Runnable() {
         @Override
         public void run() {
-            current_block.move_down();
+            if(!current_block.move_down())
+                create_new_block();
             update_field();
             update_time.postDelayed(this, UPDATE_RATE);
         }
