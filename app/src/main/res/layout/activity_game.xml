@@ -280,7 +280,7 @@
                 android:rotation="180"/>
         </RelativeLayout>
 
-        <ImageView
+        <ImageView android:id="@+id/control_rotate"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_toRightOf="@id/controls_main"

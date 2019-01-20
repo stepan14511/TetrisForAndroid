@@ -88,6 +88,15 @@ public class GameActivity extends Activity {
                 update_field();
             }
         });
+
+        ImageView control_rotate = findViewById(R.id.control_rotate);
+        control_rotate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                current_block.rotate();
+                update_field();
+            }
+        });
     }
 
     private void handler_start(){
