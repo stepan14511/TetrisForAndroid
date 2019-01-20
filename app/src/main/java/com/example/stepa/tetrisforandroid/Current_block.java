@@ -31,42 +31,45 @@ public class Current_block {
     }
 
     public void move_down(){
-        if((blocks[0][0] + 1 < Field.LINES)&&
-                (blocks[1][0] + 1 < Field.LINES)&&
-                (blocks[2][0] + 1 < Field.LINES)&&
-                (blocks[3][0] + 1 < Field.LINES)){
-            make_block_space_white();
-            for (int i = 0; i < 4; i++) {
+        make_block_space_white();
+        boolean if_clear = true;
+        for(int i = 0; i < 4; i++)
+            if(!GameActivity.field.check_if_clear(blocks[i][0] + 1, blocks[i][1]))
+                if_clear = false;
+
+        if(if_clear)
+            for (int i = 0; i < 4; i++)
                 blocks[i][0] += 1;
-            }
-            color_block_space();
-        }
+
+        color_block_space();
     }
 
     public void move_left(){
-        if((blocks[0][1] - 1 >= 0)&&
-                (blocks[1][1] - 1 >= 0)&&
-                (blocks[2][1] - 1 >= 0)&&
-                (blocks[3][1] - 1 >= 0)){
-            make_block_space_white();
-            for(int i = 0; i < 4; i++){
+        make_block_space_white();
+        boolean if_clear = true;
+        for(int i = 0; i < 4; i++)
+            if(!GameActivity.field.check_if_clear(blocks[i][0], blocks[i][1] - 1))
+                if_clear = false;
+
+        if(if_clear)
+            for(int i = 0; i < 4; i++)
                 blocks[i][1] -= 1;
-            }
-            color_block_space();
-        }
+
+        color_block_space();
     }
 
     public void move_right(){
-        if((blocks[0][1] + 1 < Field.ARROWS)&&
-                (blocks[1][1] + 1 < Field.ARROWS)&&
-                (blocks[2][1] + 1 < Field.ARROWS)&&
-                (blocks[3][1] + 1 < Field.ARROWS)){
-            make_block_space_white();
-            for(int i = 0; i < 4; i++){
+        make_block_space_white();
+        boolean if_clear = true;
+        for(int i = 0; i < 4; i++)
+            if(!GameActivity.field.check_if_clear(blocks[i][0], blocks[i][1] + 1))
+                if_clear = false;
+
+        if(if_clear)
+            for(int i = 0; i < 4; i++)
                 blocks[i][1] += 1;
-            }
-            color_block_space();
-        }
+
+        color_block_space();
     }
 
     public void rotate(){
@@ -92,6 +95,35 @@ public class Current_block {
         this.blocks[1][1] += this.rotate_change[this.type][this.position][1][1];
         this.blocks[2][1] += this.rotate_change[this.type][this.position][2][1];
         this.blocks[3][1] += this.rotate_change[this.type][this.position][3][1];
+
+        boolean if_clear = true;
+        for(int i = 0; i < 4; i++)
+            if(!GameActivity.field.check_if_clear(blocks[i][0], blocks[i][1]))
+                if_clear = false;
+
+        if(!if_clear){
+            this.blocks[0][0] -= this.rotate_change[this.type][this.position][0][0];
+            this.blocks[1][0] -= this.rotate_change[this.type][this.position][1][0];
+            this.blocks[2][0] -= this.rotate_change[this.type][this.position][2][0];
+            this.blocks[3][0] -= this.rotate_change[this.type][this.position][3][0];
+            this.blocks[0][1] -= this.rotate_change[this.type][this.position][0][1];
+            this.blocks[1][1] -= this.rotate_change[this.type][this.position][1][1];
+            this.blocks[2][1] -= this.rotate_change[this.type][this.position][2][1];
+            this.blocks[3][1] -= this.rotate_change[this.type][this.position][3][1];
+
+            this.position--;
+            if(this.position == -1)
+                this.position = 3;
+
+            this.blocks[0][0] += this.rotate_change[this.type][this.position][0][0];
+            this.blocks[1][0] += this.rotate_change[this.type][this.position][1][0];
+            this.blocks[2][0] += this.rotate_change[this.type][this.position][2][0];
+            this.blocks[3][0] += this.rotate_change[this.type][this.position][3][0];
+            this.blocks[0][1] += this.rotate_change[this.type][this.position][0][1];
+            this.blocks[1][1] += this.rotate_change[this.type][this.position][1][1];
+            this.blocks[2][1] += this.rotate_change[this.type][this.position][2][1];
+            this.blocks[3][1] += this.rotate_change[this.type][this.position][3][1];
+        }
         color_block_space();
     }
 

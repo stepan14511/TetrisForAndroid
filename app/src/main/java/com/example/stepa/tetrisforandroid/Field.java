@@ -32,4 +32,11 @@ public class Field {
     public void set_element_color_white(int line, int arrow){
         this.field[line][arrow].set_color_res(this.white_color_res);
     }
+
+    public boolean check_if_clear(int line, int arrow){
+        if((line < 0) || (line >= LINES) || (arrow < 0) || (arrow >= ARROWS))
+            return false;
+
+        return field[line][arrow].get_color_res() == white_color_res;
+    }
 }
