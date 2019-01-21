@@ -39,4 +39,28 @@ public class Field {
 
         return field[line][arrow].get_color_res() == white_color_res;
     }
+
+    //returns number of deleted lines
+    public int check_lines(){
+        //finish
+        GameActivity.current_block.make_block_space_white();
+        int counter = 0;
+        for(int i = 0; i < LINES; i++) {
+            boolean is_full = true;
+            for (int j = 0; j < ARROWS; j++) {
+                if (field[i][j].get_color_res() == white_color_res)
+                    is_full = false;
+            }
+            if(is_full) {
+                counter++;
+                for (int j = i - 1; j >= 0; j--){
+                    for(int l = 0; l < ARROWS; l++){
+                        field[j + 1][l].set_color_res(field[j][l].get_color_res());
+                    }
+                }
+            }
+        }
+        GameActivity.current_block.color_block_space();
+        return counter;
+    }
 }

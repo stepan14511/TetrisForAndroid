@@ -24,7 +24,7 @@ public class Current_block {
         }
     }
 
-    private void color_block_space(){
+    public void color_block_space(){
         for(int i = 0; i < 4; i++){
             GameActivity.field.set_element_color_res(blocks[i][0], blocks[i][1], color_res);
         }

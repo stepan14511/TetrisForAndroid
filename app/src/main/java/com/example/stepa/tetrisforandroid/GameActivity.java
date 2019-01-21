@@ -10,20 +10,22 @@ import android.widget.ImageView;
 import java.util.Random;
 
 public class GameActivity extends Activity {
-    private static final int UPDATE_RATE = 1200; //milliseconds
+    private static int UPDATE_RATE = 1200; //milliseconds
     private int[][] field_pos_res;
 
     //Objects of user classes
     public static Field field;
-    private Current_block current_block;
+    public static Current_block current_block;
 
     //Handler
     private Handler update_time;
     private Runnable update_time_runnable = new Runnable() {
         @Override
         public void run() {
-            if(!current_block.move_down())
+            if(!current_block.move_down()) {
                 create_new_block();
+                UPDATE_RATE -= 50 * field.check_lines();
+            }
             update_field();
             update_time.postDelayed(this, UPDATE_RATE);
         }
