@@ -21,11 +21,7 @@ public class GameActivity extends Activity {
     private Runnable update_time_runnable = new Runnable() {
         @Override
         public void run() {
-            if(!field.current_block.move_down()) {
-                create_new_block();
-                UPDATE_RATE -= 30 * field.check_lines();
-            }
-            update_field();
+            one_tact();
             update_time.postDelayed(this, UPDATE_RATE);
         }
     };
@@ -84,9 +80,9 @@ public class GameActivity extends Activity {
         control_down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                field.current_block.move_down();
+                one_tact();
                 update_time.removeCallbacks(update_time_runnable);
-                handler_start();
+                update_time.postDelayed(update_time_runnable, UPDATE_RATE);
                 update_field();
             }
         });
@@ -104,6 +100,14 @@ public class GameActivity extends Activity {
     private void handler_start(){
         update_time = new Handler();
         update_time.postDelayed(update_time_runnable, UPDATE_RATE);
+    }
+
+    public void one_tact(){
+        if(!field.current_block.move_down()) {
+            create_new_block();
+            UPDATE_RATE -= 30 * field.check_lines();
+        }
+        update_field();
     }
 
     private void update_field(){
