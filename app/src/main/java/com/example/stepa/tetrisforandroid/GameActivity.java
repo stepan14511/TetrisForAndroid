@@ -10,10 +10,10 @@ import android.widget.ImageView;
 import java.util.Random;
 
 public class GameActivity extends Activity {
-    private static int UPDATE_RATE = 1200; //milliseconds
+    private static int UPDATE_RATE = 1000; //milliseconds
     private int[][] field_pos_res;
 
-    //Objects of user classes
+    //Game field
     public static Field field;
 
     //Handler
@@ -23,7 +23,7 @@ public class GameActivity extends Activity {
         public void run() {
             if(!field.current_block.move_down()) {
                 create_new_block();
-                UPDATE_RATE -= 50 * field.check_lines();
+                UPDATE_RATE -= 30 * field.check_lines();
             }
             update_field();
             update_time.postDelayed(this, UPDATE_RATE);
@@ -53,8 +53,8 @@ public class GameActivity extends Activity {
         update_time.removeCallbacks(update_time_runnable);
         super.onPause();
     }
-    //End of system functions
 
+    //Custom functions
     private void create_new_block(){
         int[] colors = new int[]{R.color.orange, R.color.yellow, R.color.blue, R.color.purple, R.color.red, R.color.green};
         Random rnd = new Random();
