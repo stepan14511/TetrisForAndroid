@@ -5,6 +5,7 @@ public class Field {
     public static final int ARROWS = 11;
 
     private Block[][] field;
+    public Current_block current_block;
     private int white_color_res;
 
     Field(int white_color_res, int[][] field_pos_res){
@@ -43,7 +44,7 @@ public class Field {
     //returns number of deleted lines
     public int check_lines(){
         //finish
-        GameActivity.current_block.make_block_space_white();
+        current_block.make_block_space_white();
         int counter = 0;
         for(int i = 0; i < LINES; i++) {
             boolean is_full = true;
@@ -60,7 +61,7 @@ public class Field {
                 }
             }
         }
-        GameActivity.current_block.color_block_space();
+        current_block.color_block_space();
         return counter;
     }
 }

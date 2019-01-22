@@ -15,14 +15,13 @@ public class GameActivity extends Activity {
 
     //Objects of user classes
     public static Field field;
-    public static Current_block current_block;
 
     //Handler
     private Handler update_time;
     private Runnable update_time_runnable = new Runnable() {
         @Override
         public void run() {
-            if(!current_block.move_down()) {
+            if(!field.current_block.move_down()) {
                 create_new_block();
                 UPDATE_RATE -= 50 * field.check_lines();
             }
@@ -59,7 +58,7 @@ public class GameActivity extends Activity {
     private void create_new_block(){
         int[] colors = new int[]{R.color.orange, R.color.yellow, R.color.blue, R.color.purple, R.color.red, R.color.green};
         Random rnd = new Random();
-        current_block = new Current_block(rnd.nextInt(7), colors[rnd.nextInt(6)], rnd.nextInt(4));
+        field.current_block = new Current_block(rnd.nextInt(7), colors[rnd.nextInt(6)], rnd.nextInt(4));
     }
 
     private void buttons_init(){
@@ -67,7 +66,7 @@ public class GameActivity extends Activity {
         control_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                current_block.move_left();
+                field.current_block.move_left();
                 update_field();
             }
         });
@@ -76,7 +75,7 @@ public class GameActivity extends Activity {
         control_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                current_block.move_right();
+                field.current_block.move_right();
                 update_field();
             }
         });
@@ -85,7 +84,7 @@ public class GameActivity extends Activity {
         control_down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                current_block.move_down();
+                field.current_block.move_down();
                 update_time.removeCallbacks(update_time_runnable);
                 handler_start();
                 update_field();
@@ -96,7 +95,7 @@ public class GameActivity extends Activity {
         control_rotate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                current_block.rotate();
+                field.current_block.rotate();
                 update_field();
             }
         });
