@@ -10,11 +10,14 @@ public class Current_block {
 
     Current_block(int type, int color_res, int position) throws IllegalArgumentException{
         this.color_res = color_res;
-        this.position = 0;
+        this.position = 0; //in rotate function it will change;
         this.type = type;
 
         init_start_positions();
         blocks = start_positions[type];
+        for(int i = 0; i < position; i++){
+            rotate();
+        }
         color_block_space();
     }
 
