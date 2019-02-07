@@ -1,9 +1,11 @@
 package com.example.stepa.tetrisforandroid;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,6 +20,24 @@ public class GameActivity extends Activity {
 
     //Handler
     private Handler update_time;
+    private Handler left_zoom_handler;
+    private Handler right_zoom_handler;
+    private Runnable left_zoom_runnable = new Runnable() {
+        @Override
+        public void run() {
+            field.current_block.move_left();
+            left_zoom_handler.postDelayed(this, 150);
+            update_field();
+        }
+    };
+    private Runnable right_zoom_runnable = new Runnable() {
+        @Override
+        public void run() {
+            field.current_block.move_right();
+            right_zoom_handler.postDelayed(this, 150);
+            update_field();
+        }
+    };
     private Runnable update_time_runnable = new Runnable() {
         @Override
         public void run() {
@@ -31,6 +51,9 @@ public class GameActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        left_zoom_handler = new Handler();
+        right_zoom_handler = new Handler();
 
         buttons_init();
         field_pos_res_init();
@@ -57,22 +80,41 @@ public class GameActivity extends Activity {
         field.current_block = new Current_block(rnd.nextInt(7), colors[rnd.nextInt(6)], rnd.nextInt(4));
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void buttons_init(){
         ImageView control_left = findViewById(R.id.control_left);
-        control_left.setOnClickListener(new View.OnClickListener() {
+        control_left.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                field.current_block.move_left();
-                update_field();
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    field.current_block.move_left();
+                    update_field();
+                    left_zoom_handler.postDelayed(left_zoom_runnable, 400);
+                    return true;
+                }
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    left_zoom_handler.removeCallbacks(left_zoom_runnable);
+                    return true;
+                }
+                return false;
             }
         });
 
         ImageView control_right = findViewById(R.id.control_right);
-        control_right.setOnClickListener(new View.OnClickListener() {
+        control_right.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                field.current_block.move_right();
-                update_field();
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    field.current_block.move_right();
+                    update_field();
+                    right_zoom_handler.postDelayed(right_zoom_runnable, 400);
+                    return true;
+                }
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    right_zoom_handler.removeCallbacks(right_zoom_runnable);
+                    return true;
+                }
+                return false;
             }
         });
 
