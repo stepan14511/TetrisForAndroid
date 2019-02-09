@@ -13,20 +13,23 @@ import java.util.Random;
 
 public class GameActivity extends Activity {
     private static int UPDATE_RATE = 1000; //milliseconds
+    private static int WAITING_TIME = 400; //milliseconds
+    private static int ZOOMED_RATE = 100; //milliseconds
+    private static int UPDATE_RATE_COPY = 0;
     private int[][] field_pos_res;
 
     //Game field
     public static Field field;
 
     //Handler
-    private Handler update_time;
+    private Handler down_move_handler;
     private Handler left_zoom_handler;
     private Handler right_zoom_handler;
     private Runnable left_zoom_runnable = new Runnable() {
         @Override
         public void run() {
             field.current_block.move_left();
-            left_zoom_handler.postDelayed(this, 150);
+            left_zoom_handler.postDelayed(this, ZOOMED_RATE);
             update_field();
         }
     };
@@ -34,15 +37,15 @@ public class GameActivity extends Activity {
         @Override
         public void run() {
             field.current_block.move_right();
-            right_zoom_handler.postDelayed(this, 150);
+            right_zoom_handler.postDelayed(this, ZOOMED_RATE);
             update_field();
         }
     };
-    private Runnable update_time_runnable = new Runnable() {
+    private Runnable down_move_runnable = new Runnable() {
         @Override
         public void run() {
             one_tact();
-            update_time.postDelayed(this, UPDATE_RATE);
+            down_move_handler.postDelayed(this, UPDATE_RATE);
         }
     };
 
@@ -69,7 +72,7 @@ public class GameActivity extends Activity {
     }
 
     protected void onPause(){
-        update_time.removeCallbacks(update_time_runnable);
+        down_move_handler.removeCallbacks(down_move_runnable);
         super.onPause();
     }
 
@@ -89,7 +92,7 @@ public class GameActivity extends Activity {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     field.current_block.move_left();
                     update_field();
-                    left_zoom_handler.postDelayed(left_zoom_runnable, 400);
+                    left_zoom_handler.postDelayed(left_zoom_runnable, WAITING_TIME);
                     return true;
                 }
                 if(event.getAction() == MotionEvent.ACTION_UP){
@@ -107,7 +110,7 @@ public class GameActivity extends Activity {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     field.current_block.move_right();
                     update_field();
-                    right_zoom_handler.postDelayed(right_zoom_runnable, 400);
+                    right_zoom_handler.postDelayed(right_zoom_runnable, WAITING_TIME);
                     return true;
                 }
                 if(event.getAction() == MotionEvent.ACTION_UP){
@@ -119,13 +122,26 @@ public class GameActivity extends Activity {
         });
 
         ImageView control_down = findViewById(R.id.control_down);
-        control_down.setOnClickListener(new View.OnClickListener() {
+        control_down.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                one_tact();
-                update_time.removeCallbacks(update_time_runnable);
-                update_time.postDelayed(update_time_runnable, UPDATE_RATE);
-                update_field();
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    one_tact();
+                    down_move_handler.removeCallbacks(down_move_runnable);
+                    update_field();
+                    UPDATE_RATE_COPY = UPDATE_RATE;
+                    UPDATE_RATE = ZOOMED_RATE;
+                    down_move_handler.postDelayed(down_move_runnable, WAITING_TIME);
+                    return true;
+                }
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    down_move_handler.removeCallbacks(down_move_runnable);
+                    UPDATE_RATE = UPDATE_RATE_COPY;
+                    UPDATE_RATE_COPY = 0;
+                    down_move_handler.postDelayed(down_move_runnable, UPDATE_RATE);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -140,14 +156,21 @@ public class GameActivity extends Activity {
     }
 
     private void handler_start(){
-        update_time = new Handler();
-        update_time.postDelayed(update_time_runnable, UPDATE_RATE);
+        down_move_handler = new Handler();
+        down_move_handler.postDelayed(down_move_runnable, UPDATE_RATE);
     }
 
     public void one_tact(){
         if(!field.current_block.move_down()) {
             create_new_block();
-            UPDATE_RATE -= 30 * field.check_lines();
+            update_field();
+            if(UPDATE_RATE_COPY != 0) {
+                down_move_handler.removeCallbacks(down_move_runnable);
+                down_move_handler.postDelayed(down_move_runnable, WAITING_TIME);
+                UPDATE_RATE_COPY -= 30 * field.check_lines();
+            }
+            else
+                UPDATE_RATE -= 30 * field.check_lines();
         }
         update_field();
     }
