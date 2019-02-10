@@ -44,8 +44,10 @@ public class GameActivity extends Activity {
     private Runnable down_move_runnable = new Runnable() {
         @Override
         public void run() {
-            one_tact();
-            down_move_handler.postDelayed(this, UPDATE_RATE);
+            if(!one_tact()) {
+                down_move_handler.postDelayed(this, UPDATE_RATE);
+                Log.i("Down Handler", "down move handler set to UR ("+System.currentTimeMillis()+")");
+            }
         }
     };
 
@@ -130,15 +132,21 @@ public class GameActivity extends Activity {
                     down_move_handler.removeCallbacks(down_move_runnable);
                     update_field();
                     UPDATE_RATE_COPY = UPDATE_RATE;
+                    Log.i("Down Handler", "URC != 0 ("+System.currentTimeMillis()+")");
                     UPDATE_RATE = ZOOMED_RATE;
+                    Log.i("Down Handler", "UR = ZR ("+System.currentTimeMillis()+")");
                     down_move_handler.postDelayed(down_move_runnable, WAITING_TIME);
+                    Log.i("Down Handler", "down move handler set to waiting time ("+System.currentTimeMillis()+")");
                     return true;
                 }
                 if(event.getAction() == MotionEvent.ACTION_UP){
                     down_move_handler.removeCallbacks(down_move_runnable);
                     UPDATE_RATE = UPDATE_RATE_COPY;
+                    Log.i("Down Handler", "UR = URC");
                     UPDATE_RATE_COPY = 0;
+                    Log.i("Down Handler", "URC = 0");
                     down_move_handler.postDelayed(down_move_runnable, UPDATE_RATE);
+                    Log.i("Down Handler", "down move handler set to UR ("+System.currentTimeMillis()+")");
                     return true;
                 }
                 return false;
@@ -160,19 +168,25 @@ public class GameActivity extends Activity {
         down_move_handler.postDelayed(down_move_runnable, UPDATE_RATE);
     }
 
-    public void one_tact(){
+    //true if handler is already set(in it)
+    public boolean one_tact(){
+        boolean flag = false;
         if(!field.current_block.move_down()) {
             create_new_block();
+            Log.i("Blocks", "Created new block ("+System.currentTimeMillis()+")");
             update_field();
             if(UPDATE_RATE_COPY != 0) {
                 down_move_handler.removeCallbacks(down_move_runnable);
                 down_move_handler.postDelayed(down_move_runnable, WAITING_TIME);
+                Log.i("Down Handler", "down move handler set to waiting time ("+System.currentTimeMillis()+")");
+                flag = true;
                 UPDATE_RATE_COPY -= 30 * field.check_lines();
             }
             else
                 UPDATE_RATE -= 30 * field.check_lines();
         }
         update_field();
+        return flag;
     }
 
     private void update_field(){
