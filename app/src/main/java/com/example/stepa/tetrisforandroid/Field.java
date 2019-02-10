@@ -1,5 +1,7 @@
 package com.example.stepa.tetrisforandroid;
 
+import java.util.Random;
+
 public class Field {
     public static final int LINES = 19;
     public static final int ARROWS = 11;
@@ -63,5 +65,11 @@ public class Field {
         }
         current_block.color_block_space();
         return counter;
+    }
+
+    public void create_new_block(){
+        int[] colors = new int[]{R.color.orange, R.color.yellow, R.color.blue, R.color.purple, R.color.red, R.color.green};
+        Random rnd = new Random();
+        current_block = new Current_block(rnd.nextInt(7), colors[rnd.nextInt(6)], rnd.nextInt(4));
     }
 }

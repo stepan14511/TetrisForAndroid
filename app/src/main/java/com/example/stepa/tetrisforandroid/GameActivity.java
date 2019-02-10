@@ -63,7 +63,7 @@ public class GameActivity extends Activity {
         buttons_init();
         field_pos_res_init();
         field = new Field(R.color.white, field_pos_res);
-        create_new_block();
+        field.create_new_block();
         update_field();
     }
 
@@ -79,11 +79,6 @@ public class GameActivity extends Activity {
     }
 
     //Custom functions
-    private void create_new_block(){
-        int[] colors = new int[]{R.color.orange, R.color.yellow, R.color.blue, R.color.purple, R.color.red, R.color.green};
-        Random rnd = new Random();
-        field.current_block = new Current_block(rnd.nextInt(7), colors[rnd.nextInt(6)], rnd.nextInt(4));
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     private void buttons_init(){
@@ -172,7 +167,7 @@ public class GameActivity extends Activity {
     public boolean one_tact(){
         boolean flag = false;
         if(!field.current_block.move_down()) {
-            create_new_block();
+            field.create_new_block();
             Log.i("Blocks", "Created new block ("+System.currentTimeMillis()+")");
             update_field();
             if(UPDATE_RATE_COPY != 0) {
