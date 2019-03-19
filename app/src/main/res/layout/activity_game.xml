@@ -244,6 +244,30 @@
 
     </RelativeLayout>
 
+    <RelativeLayout android:id="@+id/score_layot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/game_field"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView android:id="@+id/score_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score:"
+            android:textSize="25sp"/>
+
+        <TextView android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/score_text"
+            android:text="1000"
+            android:textSize="25sp"
+            android:textColor="@color/red"
+            android:layout_marginLeft="20dp"/>
+
+    </RelativeLayout>
+
     <RelativeLayout android:id="@+id/controls"
         android:layout_width="wrap_content"
         android:layout_alignParentBottom="true"
