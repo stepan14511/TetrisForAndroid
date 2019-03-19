@@ -8,14 +8,14 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-
-import java.util.Random;
+import android.widget.TextView;
 
 public class GameActivity extends Activity {
     private static int UPDATE_RATE = 1000; //milliseconds
     private static int WAITING_TIME = 400; //milliseconds
     private static int ZOOMED_RATE = 100; //milliseconds
     private static int UPDATE_RATE_COPY = 0;
+    private static int SCORE = 0;
     private int[][] field_pos_res;
 
     //Game field
@@ -71,10 +71,12 @@ public class GameActivity extends Activity {
         super.onResume();
 
         handler_start();
+        update_score(0);
     }
 
     protected void onPause(){
         down_move_handler.removeCallbacks(down_move_runnable);
+        update_score(-SCORE);
         super.onPause();
     }
 
@@ -168,17 +170,54 @@ public class GameActivity extends Activity {
         boolean flag = false;
         if(!field.current_block.move_down()) {
             field.create_new_block();
+            update_score(5);
             Log.i("Blocks", "Created new block ("+System.currentTimeMillis()+")");
             update_field();
+            int deleted_lines = field.check_lines();
             if(UPDATE_RATE_COPY != 0) {
                 down_move_handler.removeCallbacks(down_move_runnable);
                 down_move_handler.postDelayed(down_move_runnable, WAITING_TIME);
                 Log.i("Down Handler", "down move handler set to waiting time ("+System.currentTimeMillis()+")");
                 flag = true;
-                UPDATE_RATE_COPY -= 30 * field.check_lines();
+                UPDATE_RATE_COPY -= 30 * deleted_lines;
+                switch (deleted_lines){
+                    case(0):
+                        update_score(0);
+                        break;
+                    case(1):
+                        update_score(100);
+                        break;
+                    case(2):
+                        update_score(225);
+                        break;
+                    case(3):
+                        update_score(360);
+                        break;
+                    case(4):
+                        update_score(500);
+                        break;
+                }
             }
-            else
+            else{
                 UPDATE_RATE -= 30 * field.check_lines();
+                switch (deleted_lines){
+                case(0):
+                    update_score(0);
+                    break;
+                case(1):
+                    update_score(100);
+                    break;
+                case(2):
+                    update_score(225);
+                    break;
+                case(3):
+                    update_score(360);
+                    break;
+                case(4):
+                    update_score(500);
+                    break;
+                }
+            }
         }
         update_field();
         return flag;
@@ -191,6 +230,12 @@ public class GameActivity extends Activity {
                 view.setBackgroundResource(field.get_element_color_res(line, arrow));
             }
         }
+    }
+
+    private void update_score(int addition){
+        SCORE += addition;
+        TextView score = findViewById(R.id.score);
+        score.setText(("" + SCORE).toCharArray(), 0, ("" + SCORE).toCharArray().length);
     }
 
     private void field_pos_res_init(){
